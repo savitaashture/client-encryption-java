@@ -45,7 +45,7 @@ jobs:
           # Check compliance
           echo "Checking compliance..."
           curl -X POST \
-            "https://e764-115-110-157-234.ngrok-free.app/api/v1/compliance/check?policyIdentifier=quantum_safe" \
+            "https://e1fd-115-110-157-234.ngrok-free.app/api/v1/compliance/check?policyIdentifier=quantum_safe" \
             -H "Content-Type: application/json" \
             -H "Accept: application/json" \
             -H "Origin: http://localhost:8001" \
