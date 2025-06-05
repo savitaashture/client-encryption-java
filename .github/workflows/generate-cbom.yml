@@ -32,3 +32,12 @@ jobs:
           echo "Generated CBOM file location: ${{ steps.cbom.outputs.pattern }}"
           echo "CBOM Content:"
           cat ${{ steps.cbom.outputs.pattern }}
+
+      # Upload CBOM to CBOMkit and Check Compliance
+      - name: Upload and Check Compliance
+        run: |
+          # Check compliance on port 8081
+          curl -X POST \
+            "http://localhost:8081/api/v1/compliance/check?policyIdentifier=quantum_safe" \
+            -H "Content-Type: application/json" \
+            -d "@${{ steps.cbom.outputs.pattern }}"
