@@ -47,5 +47,4 @@ jobs:
           curl -X POST \
             "https://d041-115-110-157-234.ngrok-free.app/api/v1/compliance/check?policyIdentifier=quantum_safe" \
             -H "Content-Type: application/json" \
-            -H "Accept: application/json" \            
             -d @test.json
