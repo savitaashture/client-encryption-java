@@ -47,4 +47,23 @@ jobs:
           curl -X POST \
             "https://d041-115-110-157-234.ngrok-free.app/api/v1/compliance/check?policyIdentifier=quantum_safe" \
             -H "Content-Type: application/json" \
-            -d @test.json
+            -d @test.json > output.json
+
+          # Parse JSON and check for "Not Quantum Safe" label
+          if jq -e '.complianceLevels[] | select(.label == "Not Quantum Safe")' output.json > /dev/null; then
+            echo "❌ Not compliant – This CBOM does not comply with the policy \"quantum_safe\"."
+            # Optional: set exit code to fail the workflow
+            exit 1
+          else
+            echo "✅ Compliant – This CBOM complies with the policy \"quantum_safe\"."
+          fi          
+
+      # Upload results as artifact
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: "compliance-results"
+          path: |
+            test.json
+            output.json
+          if-no-files-found: warn
