@@ -26,12 +26,29 @@ jobs:
         uses: PQCA/cbomkit-action@v2.0.0
         id: cbom
 
+      # Save CBOM to test.json
+      - name: Save CBOM to file
+        run: |
+          cp ${{ steps.cbom.outputs.pattern }} test.json
+          echo "Saved CBOM to test.json"
+          ls -l test.json
+
       # Display CBOM content
       - name: Display CBOM Content
         run: |
-          echo "Generated CBOM file location: ${{ steps.cbom.outputs.pattern }}"
           echo "CBOM Content:"
-          cat ${{ steps.cbom.outputs.pattern }}
+          cat test.json
+
+      # Upload and Check Compliance
+      - name: Upload and Check Compliance
+        run: |
+          
+          # Check compliance
+          echo "Checking compliance..."
+          curl -X POST \
+            "http://localhost:8081/api/v1/compliance/check?policyIdentifier=quantum_safe" \
+            -H "Content-Type: application/json" \
+            -d @test.json
 
       # Upload CBOM to CBOMkit and Check Compliance
       - name: Upload and Check Compliance
