@@ -49,12 +49,3 @@ jobs:
             "https://e764-115-110-157-234.ngrok-free.app/api/v1/compliance/check?policyIdentifier=quantum_safe" \
             -H "Content-Type: application/json" \
             -d @test.json
-
-      # Upload CBOM to CBOMkit and Check Compliance
-      - name: Upload and Check Compliance
-        run: |
-          # Check compliance on port 8081
-          curl -X POST \
-            "http://localhost:8081/api/v1/compliance/check?policyIdentifier=quantum_safe" \
-            -H "Content-Type: application/json" \
-            -d "@${{ steps.cbom.outputs.pattern }}"
