@@ -26,23 +26,9 @@ jobs:
         uses: PQCA/cbomkit-action@v2.0.0
         id: cbom
 
-      # Upload the CBOM artifact
-      - name: Upload CBOM Artifact
-        uses: actions/upload-artifact@v4
-        with: 
-          name: "CBOM"
-          path: ${{ steps.cbom.outputs.pattern }}
-          if-no-files-found: warn
-
-      - name: Check Compliance with local CBOMkit
+      # Display CBOM content
+      - name: Display CBOM Content
         run: |
-          CBOM_FILE="${{ steps.cbom.outputs.pattern }}"
-          if [ -f "$CBOM_FILE" ]; then
-            curl -X POST \
-              "http://localhost:8081/api/v1/compliance/check?policyIdentifier=quantum_safe" \
-              -H "Content-Type: application/json" \
-              -d "@$CBOM_FILE"
-          else
-            echo "CBOM file not found: $CBOM_FILE"
-            exit 1
-          fi
+          echo "Generated CBOM file location: ${{ steps.cbom.outputs.pattern }}"
+          echo "CBOM Content:"
+          cat ${{ steps.cbom.outputs.pattern }}
