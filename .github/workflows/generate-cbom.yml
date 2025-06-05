@@ -42,7 +42,6 @@ jobs:
       # Upload and Check Compliance
       - name: Upload and Check Compliance
         run: |
-          
           # Check compliance
           echo "Checking compliance..."
           curl -X POST \
