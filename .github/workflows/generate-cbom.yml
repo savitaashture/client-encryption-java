@@ -51,9 +51,16 @@ jobs:
 
           # Parse JSON and check for "Not Quantum Safe" label
           if jq -e '.complianceLevels[] | select(.label == "Not Quantum Safe")' output.json > /dev/null; then
-            echo "❌ Not compliant – This CBOM does not comply with the policy \"quantum_safe\"."
-            # Optional: set exit code to fail the workflow
+            echo "::error::❌ Not compliant – This CBOM does not comply with the policy \"quantum_safe\"."
+            echo "COMPLIANCE_STATUS=❌ Not Compliant" >> $GITHUB_ENV
           else
-            echo "✅ Compliant – This CBOM complies with the policy \"quantum_safe\"."
+            echo "::notice::✅ Compliant – This CBOM complies with the policy \"quantum_safe\"."
+            echo "COMPLIANCE_STATUS=✅ Compliant" >> $GITHUB_ENV
           fi
+
+      - name: Set Job Summary
+        run: |
+          echo "## CBOM Compliance Status" >> $GITHUB_STEP_SUMMARY
+          echo "${{ env.COMPLIANCE_STATUS }}" >> $GITHUB_STEP_SUMMARY
+          echo "For policy: quantum_safe" >> $GITHUB_STEP_SUMMARY          
 
