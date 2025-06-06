@@ -57,12 +57,3 @@ jobs:
             echo "✅ Compliant – This CBOM complies with the policy \"quantum_safe\"."
           fi
 
-      # Upload results as artifact
-      - name: Upload Results
-        uses: actions/upload-artifact@v4
-        with:
-          name: "compliance-results"
-          path: |
-            test.json
-            output.json
-          if-no-files-found: warn          
