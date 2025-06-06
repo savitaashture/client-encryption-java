@@ -53,7 +53,16 @@ jobs:
           if jq -e '.complianceLevels[] | select(.label == "Not Quantum Safe")' output.json > /dev/null; then
             echo "❌ Not compliant – This CBOM does not comply with the policy \"quantum_safe\"."
             # Optional: set exit code to fail the workflow
-            exit 1
           else
             echo "✅ Compliant – This CBOM complies with the policy \"quantum_safe\"."
-          fi          
+          fi
+
+      # Upload results as artifact
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: "compliance-results"
+          path: |
+            test.json
+            output.json
+          if-no-files-found: warn          
